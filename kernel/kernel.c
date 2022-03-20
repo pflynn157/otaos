@@ -88,12 +88,13 @@ void kernel_main(MemoryMap **mem_map)
 	//
 	//
 	//
-	for (size_t i = 1; i<50; i++) {
+	for (size_t i = 1; i<30; i++) {
 	    memset(data2, 0, 256);
 	    ata_read(0, i, data2);
 	    for (size_t j = 0; j<256; j++) {
-	        if (data2[j] == 0x6261) {
+	        if (data2[j] == 0x0FAB) {
 	            kprintf("Found at: %d\n", i);
+	            break;
 	        }
 	    }
 	}
