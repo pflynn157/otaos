@@ -45,6 +45,7 @@ void kprintf(const char *s, ...) {
                 // Print an integer
                 case 'd': {
                     if (index > 0) {
+                        buf[index] = 0;
                         terminal_writestring(buf);
                         memset(buf, 0, length);
                         index = 0;
@@ -68,6 +69,7 @@ void kprintf(const char *s, ...) {
     }
     
     if (index > 0) {
+        buf[index] = 0;
         terminal_writestring(buf);
     }
 }
