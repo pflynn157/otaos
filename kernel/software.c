@@ -9,13 +9,13 @@ void software_init() {
 }
 
 void software_handler(int num) {
-    printf("Software interrupt!\n");
+    kprintf("Software interrupt!\n");
     switch (num) {
-        case 1: printf("Stdout\n"); break;
-        case 2: printf("Stdin\n"); break;
-        case 3: printf("Stderr\n"); break;
-        case 4: printf("Open\n"); break;
-        case 5: printf("Write\n"); break;
-        default: printf("Idk\n");
+        case 1: kprintf("Stdout\n"); break;
+        case 2: kprintf("Stdin\n"); break;
+        case 3: kprintf("Stderr\n"); break;
+        case 4: kprintf("Open\n"); break;
+        case 5: kprintf("Write\n"); break;
+        default: kprintf("Idk\n");
     }
 }

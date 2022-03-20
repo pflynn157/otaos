@@ -41,7 +41,7 @@ void keyboard_handler() {
         char buf[2];
         buf[0] = keymap[keycode];
         buf[1] = '\0';
-        printf(buf);
+        kprintf(buf);
         
         char c = keymap[keycode];
         

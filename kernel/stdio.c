@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void printf(const char *s, ...) {
+void kprintf(const char *s, ...) {
     terminal_writestring(s);
 }
 

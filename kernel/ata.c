@@ -70,21 +70,21 @@ const uint16_t ata_status_bsy = (uint8_t)128;
 void ata_check_error() {
     uint8_t err = inb(ata_port_err);
     if ((err & 1) == 1) {
-        printf("SATA error: Address not found.\n");
+        kprintf("SATA error: Address not found.\n");
     } else if ((err & 2) == 2) {
-        printf("SATA error: Track zero not found.\n");
+        kprintf("SATA error: Track zero not found.\n");
     } else if ((err & 4) == 4) {
-        printf("SATA error: abort.\n");
+        kprintf("SATA error: abort.\n");
     } else if ((err & 8) == 8) {
-        printf("SATA error: change req.\n");
+        kprintf("SATA error: change req.\n");
     } else if ((err & 16) == 16) {
-        printf("SATA error: ID not found.\n");
+        kprintf("SATA error: ID not found.\n");
     } else if ((err & 32) == 32) {
-        printf("SATA error: media changed.\n");
+        kprintf("SATA error: media changed.\n");
     } else if ((err & 64) == 64) {
-        printf("SATA error: UNC Block error.\n");
+        kprintf("SATA error: UNC Block error.\n");
     } else if ((err & 128) == 128) {
-        printf("SATA error: Bad block.\n");
+        kprintf("SATA error: Bad block.\n");
     }
 }
 
@@ -104,10 +104,10 @@ void ata_id_drive() {
         }
     }
     if (status == 0) {
-        printf("No drive!\n");
+        kprintf("No drive!\n");
         return;
     } else {
-        printf("ATA found\n");
+        kprintf("ATA found\n");
     }
     
     uint16_t identity_data[256];
@@ -119,7 +119,7 @@ void ata_id_drive() {
     max_sc_count |= lba1_max;
     max_sc_count |= lba2_max;
     if (max_sc_count == 0) {
-        printf("LBA28 not supported.\n");
+        kprintf("LBA28 not supported.\n");
     }
 }
 
@@ -143,8 +143,8 @@ void ata_read1(uint32_t drive, uint32_t addr, uint16_t num_sectors) {
             break;
         }
     }
-    if (ready) printf("Ready to write!\n");
-    else printf("Not ready to write");
+    //if (ready) printf("Ready to write!\n");
+    //else printf("Not ready to write");
     
     for (size_t i = 0; i<bytes/sizeof(uint16_t); i++) {
         inw(ata_port_data);
@@ -171,8 +171,8 @@ void ata_read(uint32_t drive, uint32_t addr, uint16_t *data, uint16_t num_sector
             break;
         }
     }
-    if (ready) printf("Ready to write!\n");
-    else printf("Not ready to write");
+    //if (ready) printf("Ready to write!\n");
+    //else printf("Not ready to write");
     
     for (size_t i = 0; i<bytes/sizeof(uint16_t); i++) {
         data[i] = inw(ata_port_data);
@@ -200,8 +200,8 @@ void ata_write(uint32_t drive, uint32_t addr, uint16_t *data, size_t size) {
             break;
         }
     }
-    if (ready) printf("Ready to write!\n");
-    else printf("Not ready to write");
+    //if (ready) printf("Ready to write!\n");
+    //else printf("Not ready to write");
     
     // Now, write
     for (size_t i = 0; i<256; i++) {
@@ -222,7 +222,7 @@ void ata_write(uint32_t drive, uint32_t addr, uint16_t *data, size_t size) {
         }
     }
     
-    if (done) printf("Write done!\n");
-    else printf("Write failed.\n");
+    //if (done) printf("Write done!\n");
+    //else printf("Write failed.\n");
 }
 

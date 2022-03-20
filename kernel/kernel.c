@@ -41,13 +41,13 @@ void kernel_main(MemoryMap **mem_map)
 	terminal_writestring("Hello, kernel World!\n");
 	
 	if (mem_map == NULL) {
-	    printf("NULL MEM\n");
+	    kprintf("NULL MEM\n");
 	} else {
-	    printf("Found memory\n");
+	    kprintf("Found memory\n");
 	    size_t i = 0;
 	    while (mem_map[i]) {
 	        MemoryMap *map = mem_map[i];
-	        printf("MEM\n");
+	        kprintf("MEM\n");
 	        i += sizeof(MemoryMap);
 	    }
 	}
@@ -63,7 +63,7 @@ void kernel_main(MemoryMap **mem_map)
 	uint16_t data2[256];
 	ata_read(0, 20, data2, 2);
 	if (data2[0] == 0xABCD && data2[1] == 0xABCD) {
-	    printf("Pass");
+	    kprintf("Pass\n");
 	}
 	
 	while (1) {}

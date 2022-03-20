@@ -12,8 +12,8 @@ static idtr_t idtr;
 __attribute__((noreturn))
 void exception_handler(int num);
 void exception_handler(int num) {
-    if (num == 0x10) printf("Bad TSS");
-    printf("IDT Error\n");
+    if (num == 0x10) kprintf("Bad TSS");
+    kprintf("IDT Error\n");
     asm volatile("cli; hlt");
 }
 
