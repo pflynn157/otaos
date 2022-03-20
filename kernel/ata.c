@@ -110,7 +110,7 @@ void ata_id_drive() {
         kprintf("ATA found\n");
     }
     
-    uint16_t identity_data[256];
+    /*uint16_t identity_data[256];
 	for (uint16_t i = 0; i < 256; i++)
 		identity_data[i] = inw(ata_port_cmd);
     uint32_t lba1_max = identity_data[60];
@@ -120,10 +120,10 @@ void ata_id_drive() {
     max_sc_count |= lba2_max;
     if (max_sc_count == 0) {
         kprintf("LBA28 not supported.\n");
-    }
+    }*/
 }
 
-void ata_read1(uint32_t drive, uint32_t addr, uint16_t num_sectors) {
+/*void ata_read1(uint32_t drive, uint32_t addr, uint16_t num_sectors) {
     uint16_t num_read = num_sectors * 256;
     size_t bytes = num_read * sizeof(uint16_t);
     
@@ -149,13 +149,10 @@ void ata_read1(uint32_t drive, uint32_t addr, uint16_t num_sectors) {
     for (size_t i = 0; i<bytes/sizeof(uint16_t); i++) {
         inw(ata_port_data);
     }
-}
+}*/
 
-void ata_read(uint32_t drive, uint32_t addr, uint16_t *data, uint16_t num_sectors) {
-    uint16_t num_read = num_sectors * 256;
-    size_t bytes = num_read * sizeof(uint16_t);
-    
-    outb(ata_port_sc, num_sectors/256);
+void ata_read(uint32_t drive, uint32_t addr, uint16_t *data) {
+    outb(ata_port_sc, 1);
     outb(ata_port_lba_low, addr);
     outb(ata_port_lba_mid, addr >> 8);
     outb(ata_port_lba_high, addr >> 16);
@@ -166,16 +163,15 @@ void ata_read(uint32_t drive, uint32_t addr, uint16_t *data, uint16_t num_sector
     int ready = 0;
     for (int i = 0; i<1000; i++) {
         uint8_t status = inb(ata_port_cmd);
-        if ((status & ata_status_bsy) == 0 && (status & ata_status_drq) !=0) {
+        if ((status & ata_status_bsy) == 0 && (status & ata_status_drq) != 0) {
             ready = 1;
             break;
         }
     }
-    //if (ready) printf("Ready to write!\n");
-    //else printf("Not ready to write");
     
-    for (size_t i = 0; i<bytes/sizeof(uint16_t); i++) {
-        data[i] = inw(ata_port_data);
+    for (size_t i = 0; i<256; i++) {
+        uint16_t d = inw(ata_port_data);
+        if (addr != 0) data[i] = d;
     }
 }
 
@@ -200,8 +196,8 @@ void ata_write(uint32_t drive, uint32_t addr, uint16_t *data, size_t size) {
             break;
         }
     }
-    //if (ready) printf("Ready to write!\n");
-    //else printf("Not ready to write");
+    //if (ready) kprintf("Ready to write!\n");
+    //else kprintf("Not ready to write");
     
     // Now, write
     for (size_t i = 0; i<256; i++) {
@@ -222,7 +218,7 @@ void ata_write(uint32_t drive, uint32_t addr, uint16_t *data, size_t size) {
         }
     }
     
-    //if (done) printf("Write done!\n");
-    //else printf("Write failed.\n");
+    //if (done) kprintf("Write done!\n");
+    //else kprintf("Write failed.\n");
 }
 

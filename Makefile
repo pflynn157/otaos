@@ -25,8 +25,8 @@ build/os.img: build/os.bin
 	dd if=/dev/zero of=$@ bs=1024 count=1024 conv=notrunc
 	dd if=$^ of=$@ bs=512 conv=notrunc
 	
-build/os.bin: build/boot.bin build/kernel.elf
-	cat build/boot.bin build/kernel.elf > $@
+build/os.bin: build/boot.bin build/kernel.elf build/fs.img
+	cat build/boot.bin build/kernel.elf build/fs.img > $@
 	
 build/boot.bin: boot/boot1.asm
 	nasm -f bin $^ -o $@
@@ -42,6 +42,10 @@ build/kernel/%.o: kernel/%.c
 	
 build/kernel/%.o: kernel/%.asm
 	nasm -f elf32 $< -o $@
+
+.PHONY: build/fs.img	
+build/fs.img:
+	printf "%x" 43981 > build/fs.img
 	
 .PHONY: clean
 clean:

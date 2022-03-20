@@ -53,16 +53,49 @@ void kernel_main(MemoryMap **mem_map)
 	
 	uint16_t data[256];
 	for (int i = 0; i<256; i++) {
-	    data[i] = 0xABCD;
+	    data[i] = 0x00AB;
 	}
-	ata_id_drive();
-	ata_read1(0, 0, 1);
-	ata_write(0, 20, data, 256*sizeof(uint16_t));
 	
-	uint16_t data2[256];
-	ata_read(0, 20, data2, 2);
-	if (data2[0] == 0xABCD && data2[1] == 0xABCD) {
+	
+	ata_id_drive();
+	ata_read(0, 1, NULL);
+	ata_write(0, 25, data, 256*sizeof(uint16_t));
+	
+	int16_t data2[256];
+	ata_read(0, 25, data2);
+	if (data2[0] == 0x00AB) {
 	    kprintf("Pass\n");
+	} else {
+	    kprintf("FAIL: %d\n", data2[0]);
+	}
+	
+	memset(data2, 0, 256);
+	ata_read(0, 25, data2);
+	if (data2[0] == 0x00AB) {
+	    kprintf("Pass\n");
+	} else {
+	    kprintf("FAIL: %d\n", data2[0]);
+	}
+	
+	//
+	//
+	//
+	for (int i = 0; i<256; i++) {
+	    data[i] = 0xCD00;
+	}
+	ata_write(0, 26, data, 256*sizeof(uint16_t));
+	
+	//
+	//
+	//
+	for (size_t i = 1; i<50; i++) {
+	    memset(data2, 0, 256);
+	    ata_read(0, i, data2);
+	    for (size_t j = 0; j<256; j++) {
+	        if (data2[j] == 0x6261) {
+	            kprintf("Found at: %d\n", i);
+	        }
+	    }
 	}
 	
 	while (1) {}
