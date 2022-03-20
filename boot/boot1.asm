@@ -18,6 +18,7 @@ boot_start:
     pop eax
     cmp eax, 3
     jle .load_kernel
+    call do_e820
     jmp enable_protected
     hlt
     
@@ -28,6 +29,8 @@ read_drive:
     int 0x13
     popa
     ret
+    
+%include "boot/memory.asm"
     
 ;
 ; The GDT- global descriptor table
@@ -90,6 +93,7 @@ pm_entry:
     ; Sets up the stack for the kernel
     mov ebp, 0x90000
     mov esp, ebp
+    mov edi, 0x8000
     call 0x1000
     hlt
     

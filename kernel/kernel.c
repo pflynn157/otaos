@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdio.h>
 
 #include <cpu/gdt.h>
 #include <cpu/idt.h>
@@ -11,8 +12,15 @@
 #include <drivers/keyboard.h>
 #include <drivers/software.h>
 #include <drivers/ata.h>
+
+typedef struct {
+    uint64_t base;
+    uint64_t length;
+    uint32_t type;
+    uint32_t attr;
+} __attribute__((packed)) MemoryMap;
  
-void kernel_main(void) 
+void kernel_main(MemoryMap **mem_map) 
 {
     asm volatile("cli");
     setupGDT();
@@ -31,6 +39,18 @@ void kernel_main(void)
  
 	/* Newline support is left as an exercise. */
 	terminal_writestring("Hello, kernel World!\n");
+	
+	if (mem_map == NULL) {
+	    printf("NULL MEM\n");
+	} else {
+	    printf("Found memory\n");
+	    size_t i = 0;
+	    while (mem_map[i]) {
+	        MemoryMap *map = mem_map[i];
+	        printf("MEM\n");
+	        i += sizeof(MemoryMap);
+	    }
+	}
 	
 	uint16_t data[256];
 	for (int i = 0; i<256; i++) {
