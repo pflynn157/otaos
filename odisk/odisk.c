@@ -19,11 +19,16 @@ int main(int argc, char *argv[]) {
     
     // Write the first file
     char *content = "Hello!";
+    char *name = "file1.txt";
     
     uint8_t type = 0b00010000;
     uint16_t size = strlen(content) + 1;
     fputc(type, file);
     fwrite(&size, sizeof(uint16_t), 1, file);
+    uint16_t name_length = strlen(name);
+    fwrite(&name_length, sizeof(uint16_t), 1, file);
+    fputs(name, file);
+    fputc(0, file);
     fputs(content, file);
     fputc(0, file);
     

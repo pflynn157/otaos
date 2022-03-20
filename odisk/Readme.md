@@ -15,6 +15,8 @@ object:
     Type: (uint8_t)
         Bits 0-4: 1- file; 2- folder
         Bits 5-8: Reserved
-    Size: (uint8_t)
+    Size: (uint16_t)
+    FS Name Length (uint8_t)
+    FS Name
     Content
     
