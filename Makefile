@@ -1,7 +1,16 @@
 CFLAGS=-I./include
 
 OBJS=build/boot2.o \
-	build/kernel/kernel.o
+	build/kernel/kernel.o \
+	build/kernel/gdt.o \
+	build/kernel/io.o \
+	build/kernel/pic.o \
+	build/kernel/idt.o \
+	build/kernel/idt2.o \
+	build/kernel/string.o \
+	build/kernel/stdio.o \
+	build/kernel/keyboard.o \
+	build/kernel/software.o
 
 all: check build/os.img
 
@@ -29,10 +38,13 @@ build/boot2.o: boot/boot2.asm
 build/kernel/%.o: kernel/%.c
 	i686-elf-gcc $(CFLAGS) -c $< -o $@
 	
+build/kernel/%.o: kernel/%.asm
+	nasm -f elf32 $< -o $@
+	
 .PHONY: clean
 clean:
-	rm build/*.o
-	rm build/*.bin
-	rm build/*.img
-	rm build/*.elf
-	rm build/kernel/*
+	rm build/*.o; \
+	rm build/*.bin; \
+	rm build/*.img; \
+	rm build/*.elf; \
+	rm build/kernel/*;

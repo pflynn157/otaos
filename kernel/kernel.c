@@ -1,6 +1,14 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <string.h>
+
+#include <cpu/gdt.h>
+#include <cpu/idt.h>
+#include <cpu/pic.h>
+#include <cpu/io.h>
+#include <drivers/keyboard.h>
+#include <drivers/software.h>
  
 /* Hardware text mode color constants. */
 enum vga_color {
@@ -30,14 +38,6 @@ static inline uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg)
 static inline uint16_t vga_entry(unsigned char uc, uint8_t color) 
 {
 	return (uint16_t) uc | (uint16_t) color << 8;
-}
- 
-size_t strlen(const char* str) 
-{
-	size_t len = 0;
-	while (str[len])
-		len++;
-	return len;
 }
  
 static const size_t VGA_WIDTH = 80;
@@ -96,6 +96,18 @@ void terminal_writestring(const char* data)
  
 void kernel_main(void) 
 {
+    asm volatile("cli");
+    setupGDT();
+    pic_init();
+    idt_init();
+    
+    // Map the keyboard
+    idt_set_descriptor(0x21, keyboard_handler_int, 0x8E);
+    keyboard_init();
+    
+    idt_set_descriptor(0x30, software_handler_int, 0x8E);
+    software_init();
+    
 	/* Initialize terminal interface */
 	terminal_initialize();
  
