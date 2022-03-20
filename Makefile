@@ -11,7 +11,8 @@ OBJS=build/boot2.o \
 	build/kernel/stdio.o \
 	build/kernel/keyboard.o \
 	build/kernel/software.o \
-	build/kernel/ata.o
+	build/kernel/ata.o \
+	build/kernel/tty.o
 
 all: check build/os.img
 
