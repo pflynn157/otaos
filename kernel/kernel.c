@@ -12,6 +12,7 @@
 #include <drivers/keyboard.h>
 #include <drivers/software.h>
 #include <drivers/ata.h>
+#include <fs/fs.h>
 
 typedef struct {
     uint64_t base;
@@ -51,13 +52,15 @@ void kernel_main(MemoryMap **mem_map)
 	    }
 	}
 	
-	uint16_t data[256];
+	fs_init();
+	
+	/*uint16_t data[256];
 	for (int i = 0; i<256; i++) {
 	    data[i] = 0x00AB;
-	}
+	}*/
 	
 	
-	ata_id_drive();
+	/*ata_id_drive();
 	ata_read(0, 1, NULL);
 	ata_write(0, 25, data, 256*sizeof(uint16_t));
 	
@@ -97,7 +100,7 @@ void kernel_main(MemoryMap **mem_map)
 	            break;
 	        }
 	    }
-	}
+	}*/
 	
 	while (1) {}
 }
