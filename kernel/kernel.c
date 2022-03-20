@@ -64,8 +64,12 @@ void kernel_main(MemoryMap **mem_map)
 	        ++index;
 	        c = fs_read();
 	    }
-	    kprintf(buf);
+	    //kprintf(buf);
+	    void (*func1)(void) = &buf;
+	    (*func1)();
 	}
+	
+	fs_close();
 	
 	/*uint16_t data[256];
 	for (int i = 0; i<256; i++) {

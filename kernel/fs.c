@@ -123,3 +123,7 @@ uint8_t fs_read() {
     return data;
 }
 
+void fs_close() {
+    // TODO
+}
+
