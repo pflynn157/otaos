@@ -1,18 +1,15 @@
 CFLAGS=-I./include
 
-OBJS=build/boot2.o \
-	build/kernel/kernel.o \
-	build/kernel/gdt.o \
-	build/kernel/io.o \
-	build/kernel/pic.o \
-	build/kernel/idt.o \
-	build/kernel/idt2.o \
-	build/kernel/string.o \
-	build/kernel/stdio.o \
-	build/kernel/keyboard.o \
-	build/kernel/software.o \
-	build/kernel/ata.o \
-	build/kernel/tty.o
+KERNEL_SRC=$(wildcard kernel/*.c)
+KERNEL_OBJS=$(addprefix build/,$(patsubst %.c, %.o, $(KERNEL_SRC)))
+KERNEL_ASM_SRC=$(wildcard kernel/*.asm)
+KERNEL_ASM_OBJS=$(addprefix build/,$(patsubst %.asm, %.o, $(KERNEL_ASM_SRC)))
+
+BOOT_OBJS=build/boot2.o
+
+OBJS=$(BOOT_OBJS) \
+	$(KERNEL_OBJS) \
+	$(KERNEL_ASM_OBJS)
 
 all: check build/os.img
 
@@ -54,3 +51,4 @@ clean:
 	rm build/*.img; \
 	rm build/*.elf; \
 	rm build/kernel/*;
+	
