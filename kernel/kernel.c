@@ -43,11 +43,10 @@ void kernel_main(MemoryMap **mem_map)
 	if (mem_map == NULL) {
 	    kprintf("NULL MEM\n");
 	} else {
-	    kprintf("Found memory\n");
 	    size_t i = 0;
 	    while (mem_map[i]) {
 	        MemoryMap *map = mem_map[i];
-	        kprintf("MEM\n");
+	        kprintf("Memory: %d MB\n", map->length / 1024 / 1024);
 	        i += sizeof(MemoryMap);
 	    }
 	}
