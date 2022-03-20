@@ -123,7 +123,7 @@ void ata_id_drive() {
     }
 }
 
-void ata_read(uint32_t drive, uint32_t addr, uint16_t num_sectors) {
+void ata_read1(uint32_t drive, uint32_t addr, uint16_t num_sectors) {
     uint16_t num_read = num_sectors * 256;
     size_t bytes = num_read * sizeof(uint16_t);
     
@@ -148,6 +148,34 @@ void ata_read(uint32_t drive, uint32_t addr, uint16_t num_sectors) {
     
     for (size_t i = 0; i<bytes/sizeof(uint16_t); i++) {
         inw(ata_port_data);
+    }
+}
+
+void ata_read(uint32_t drive, uint32_t addr, uint16_t *data, uint16_t num_sectors) {
+    uint16_t num_read = num_sectors * 256;
+    size_t bytes = num_read * sizeof(uint16_t);
+    
+    outb(ata_port_sc, num_sectors/256);
+    outb(ata_port_lba_low, addr);
+    outb(ata_port_lba_mid, addr >> 8);
+    outb(ata_port_lba_high, addr >> 16);
+    outb(ata_port_dh, ata_master_drive | (drive << 4) | ((addr >> 24) & 0xF));
+    outb(ata_port_cmd, ata_cmd_read);
+    
+    // Poll until ready
+    int ready = 0;
+    for (int i = 0; i<1000; i++) {
+        uint8_t status = inb(ata_port_cmd);
+        if ((status & ata_status_bsy) == 0 && (status & ata_status_drq) !=0) {
+            ready = 1;
+            break;
+        }
+    }
+    if (ready) printf("Ready to write!\n");
+    else printf("Not ready to write");
+    
+    for (size_t i = 0; i<bytes/sizeof(uint16_t); i++) {
+        data[i] = inw(ata_port_data);
     }
 }
 
