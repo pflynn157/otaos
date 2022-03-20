@@ -10,7 +10,8 @@ OBJS=build/boot2.o \
 	build/kernel/string.o \
 	build/kernel/stdio.o \
 	build/kernel/keyboard.o \
-	build/kernel/software.o
+	build/kernel/software.o \
+	build/kernel/ata.o
 
 all: check build/os.img
 

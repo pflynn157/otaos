@@ -9,6 +9,7 @@
 #include <cpu/io.h>
 #include <drivers/keyboard.h>
 #include <drivers/software.h>
+#include <drivers/ata.h>
  
 /* Hardware text mode color constants. */
 enum vga_color {
@@ -113,4 +114,12 @@ void kernel_main(void)
  
 	/* Newline support is left as an exercise. */
 	terminal_writestring("Hello, kernel World!\n");
+	
+	uint16_t data[256];
+	for (int i = 0; i<256; i++) data[i] = 'A';
+	ata_id_drive();
+	ata_read(0, 0, 5);
+	ata_write(0, 20, data, 256*sizeof(uint16_t));
+	
+	while (1) {}
 }
