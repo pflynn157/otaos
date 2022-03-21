@@ -53,8 +53,8 @@ void kernel_main(MemoryMap **mem_map)
 	}
 	
 	fs_init();
-	if (fs_open("file1.txt")) {
-	    kprintf("file1.txt is open!\n");
+	if (fs_open("file1.exe")) {
+	    kprintf("file1.exe is open!\n");
 	    
 	    char c = fs_read();
 	    char buf[256];
@@ -69,6 +69,23 @@ void kernel_main(MemoryMap **mem_map)
 	    (*func1)();
 	}
 	
+	fs_close();
+	
+	if (fs_open("hello.txt")) {
+	    kprintf("hello.txt is open!\n");
+	    
+	    char c = fs_read();
+	    char buf[256];
+	    int index = 0;
+	    while (c != 0) {
+	        buf[index] = c;
+	        ++index;
+	        c = fs_read();
+	    }
+	    kprintf(buf);
+	} else {
+	    kprintf("Unable to open hello.txt\n");
+	}
 	fs_close();
 	
 	/*uint16_t data[256];

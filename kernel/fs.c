@@ -110,6 +110,8 @@ int fs_open(const char *path) {
             fs_current_sector = i;
             fs_current_chunk = index;
             return 1;
+        } else {
+            index += content_size;
         }
     }
 

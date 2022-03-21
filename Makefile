@@ -41,11 +41,11 @@ build/kernel/%.o: kernel/%.asm
 	nasm -f elf32 $< -o $@
 
 .PHONY: build/fs.img	
-build/fs.img: build/odisk
-	build/odisk
+build/fs.img:
+	nasm -f bin odisk/disk.asm -o build/fs.img
 	
-build/odisk: odisk/odisk.c
-	$(CC) odisk/odisk.c -o build/odisk
+#build/odisk: odisk/odisk.c
+#	$(CC) odisk/odisk.c -o build/odisk
 	
 .PHONY: clean
 clean:
