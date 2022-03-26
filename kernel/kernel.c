@@ -51,6 +51,7 @@ void kernel_main(MemoryMap **mem_map)
 	        i += sizeof(MemoryMap);
 	    }
 	}
+	kprintf("=======================\n");
 	
 	fs_init();
 	if (fs_open("file1.exe")) {
@@ -65,11 +66,13 @@ void kernel_main(MemoryMap **mem_map)
 	        c = fs_read();
 	    }
 	    //kprintf(buf);
-	    void (*func1)(void) = &buf;
-	    (*func1)();
+	    int (*func1)(void) = &buf;
+	    int ret = (*func1)();
+	    kprintf("Exit with: %d\n", ret);
 	}
 	
 	fs_close();
+	kprintf("=======================\n");
 	
 	if (fs_open("hello.txt")) {
 	    kprintf("hello.txt is open!\n");

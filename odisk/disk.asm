@@ -1,3 +1,4 @@
+;[BITS 32]
 ;
 ; An initial example of the terrible ota file system :)
 ;
@@ -11,6 +12,7 @@ dw 10                                   ; File name length
 db "file1.exe",0                        ; The file name
 FILE1_EXE_START:
     int 0x30
+    ;mov eax, 5
     ret
 FILE1_EXE_END:
 

@@ -9,6 +9,7 @@ size_t terminal_row;
 size_t terminal_column;
 uint8_t terminal_color;
 uint16_t* terminal_buffer;
+uint16_t* text_buffer;
  
 void terminal_initialize(void) 
 {
@@ -22,6 +23,9 @@ void terminal_initialize(void)
 			terminal_buffer[index] = vga_entry(' ', terminal_color);
 		}
 	}
+	
+	uint16_t buffer[VGA_HEIGHT][VGA_WIDTH];
+	text_buffer = &buffer;
 }
  
 void terminal_setcolor(uint8_t color) 
