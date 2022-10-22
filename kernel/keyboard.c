@@ -24,7 +24,7 @@ unsigned char keymap[128] = {
     0 /* left shift */,
     '\\',
     'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/',
-    0 /* right shift */
+    0 /* right shift */, '*', 0 /*left alt*/, ' '
 };
 
 void keyboard_init() {

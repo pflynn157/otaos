@@ -41,7 +41,7 @@ void kernel_main(MemoryMap **mem_map)
 	/* Newline support is left as an exercise. */
 	terminal_writestring("Hello, kernel World!\n");
 	
-	if (mem_map == NULL) {
+	/*if (mem_map == NULL) {
 	    kprintf("NULL MEM\n");
 	} else {
 	    size_t i = 0;
@@ -51,9 +51,9 @@ void kernel_main(MemoryMap **mem_map)
 	        i += sizeof(MemoryMap);
 	    }
 	}
-	kprintf("=======================\n");
+	kprintf("=======================\n");*/
 	
-	fs_init();
+	/*fs_init();
 	if (fs_open("file1.exe")) {
 	    kprintf("file1.exe is open!\n");
 	    
@@ -89,7 +89,7 @@ void kernel_main(MemoryMap **mem_map)
 	} else {
 	    kprintf("Unable to open hello.txt\n");
 	}
-	fs_close();
+	fs_close();*/
 	
 	/*uint16_t data[256];
 	for (int i = 0; i<256; i++) {
